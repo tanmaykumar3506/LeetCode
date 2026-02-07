@@ -3,30 +3,19 @@ public:
     vector<int> topKFrequent(vector<int>& nums, int k) {
         int n=nums.size();
         unordered_map<int, int> mp;
-        for (int &num:nums){
+        for (auto num:nums){
             mp[num]++;
         }
 
-        vector<vector<int>> bucket(n+1);
-//Index = freq
-//value = elements
-//bucket[i] = elements having i frequency
-        for (auto &it:mp){
-            int element=it.first;
-            int freq=it.second;
-
-            bucket[freq].push_back(element);
+        priority_queue<pair<int,int>> pq;
+        for(auto i:mp){
+            pq.push({i.second,i.first});
         }
-        vector<int> result;
-        for (int i=bucket.size()-1;i>=0 && result.size()<k;i--){
-            for(int x:bucket[i]){
-                result.push_back(x);
-                if (result.size()==k){
-                    break;
-                }
-            }
-        }return result;
+        
+        vector<int> ans;
+        while(k--){
+            ans.push_back(pq.top().second);
+            pq.pop();
+        }return ans;
     }
-
-
 };
